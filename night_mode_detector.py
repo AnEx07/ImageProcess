@@ -135,4 +135,4 @@ if __name__ == "__main__":
     is_night = NightModeDetector(
         ShowSrcFlag=True, ShowHistFlag=True).detect_is_night_from_path(path)
 
-    print("Night" if is_night else "Day")
+    print(f"It Is A -> {'Night' if is_night else 'Day'} Image")
