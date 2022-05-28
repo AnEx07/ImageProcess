@@ -118,8 +118,12 @@ class NightModeDetector:
         if not os.path.exists(path):
             raise FileNotFoundError("Please Provide A Valid Image Path!")
 
+<<<<<<< HEAD
         print(np.asarray(Image.open(path)).astype(np.uint8))
         return np.asarray(Image.open(path)).astype(np.uint8)
+=======
+        return np.asarray(Image.open(path))
+>>>>>>> f5240fd962a9236c748ac3281cb7adfcf6bdeafe
 
     def detect_is_night_from_path(self, path: str):
         return self.detect_is_night(self.load_img(path))
