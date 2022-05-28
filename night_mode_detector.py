@@ -91,39 +91,33 @@ class NightModeDetector:
         Image.fromarray(img).show()
 
     def show_hist(self, b_hist: np.ndarray, g_hist: np.ndarray, r_hist: np.ndarray, wait=True):
-        print(b_hist.shape)
-        print(b_hist)
-        print(type(b_hist))
-        b_hist = vis2 = cv.CreateMat(h, w, cv.CV_32FC3)
-        cv.normalize(b_hist, b_hist, alpha=0, beta=hist_h,
-                     norm_type=cv.NORM_MINMAX)
-        cv.normalize(g_hist, g_hist, alpha=0, beta=hist_h,
-                     norm_type=cv.NORM_MINMAX)
-        cv.normalize(r_hist, r_hist, alpha=0, beta=hist_h,
-                     norm_type=cv.NORM_MINMAX)
-        histImage = np.zeros((hist_h, hist_w, 3), dtype=np.uint8)
-        for i in range(1, histSize):
-            cv.line(histImage, (bin_w * (i - 1), hist_h - int(b_hist[i - 1])),
-                    (bin_w * (i), hist_h - int(b_hist[i])),
-                    (255, 0, 0), thickness=2)
-            cv.line(histImage, (bin_w * (i - 1), hist_h - int(g_hist[i - 1])),
-                    (bin_w * (i), hist_h - int(g_hist[i])),
-                    (0, 255, 0), thickness=2)
-            cv.line(histImage, (bin_w * (i - 1), hist_h - int(r_hist[i - 1])),
-                    (bin_w * (i), hist_h - int(r_hist[i])),
-                    (0, 0, 255), thickness=2)
-        self.show_img(histImage, 'Histogram', wait)
+        pass
+
+        # cv.normalize(b_hist, b_hist, alpha=0, beta=hist_h,
+        #              norm_type=cv.NORM_MINMAX)
+        # cv.normalize(g_hist, g_hist, alpha=0, beta=hist_h,
+        #              norm_type=cv.NORM_MINMAX)
+        # cv.normalize(r_hist, r_hist, alpha=0, beta=hist_h,
+        #              norm_type=cv.NORM_MINMAX)
+        # histImage = np.zeros((hist_h, hist_w, 3), dtype=np.uint8)
+        # for i in range(1, histSize):
+        #     cv.line(histImage, (bin_w * (i - 1), hist_h - int(b_hist[i - 1])),
+        #             (bin_w * (i), hist_h - int(b_hist[i])),
+        #             (255, 0, 0), thickness=2)
+        #     cv.line(histImage, (bin_w * (i - 1), hist_h - int(g_hist[i - 1])),
+        #             (bin_w * (i), hist_h - int(g_hist[i])),
+        #             (0, 255, 0), thickness=2)
+        #     cv.line(histImage, (bin_w * (i - 1), hist_h - int(r_hist[i - 1])),
+        #             (bin_w * (i), hist_h - int(r_hist[i])),
+        #             (0, 0, 255), thickness=2)
+        # self.show_img(histImage, 'Histogram', wait)
 
     def load_img(self, path: str):
         if not os.path.exists(path):
             raise FileNotFoundError("Please Provide A Valid Image Path!")
 
-<<<<<<< HEAD
-        print(np.asarray(Image.open(path)).astype(np.uint8))
+        print(np.asarray(Image.open(path)).astype(np.uint8).shape)
         return np.asarray(Image.open(path)).astype(np.uint8)
-=======
-        return np.asarray(Image.open(path))
->>>>>>> f5240fd962a9236c748ac3281cb7adfcf6bdeafe
 
     def detect_is_night_from_path(self, path: str):
         return self.detect_is_night(self.load_img(path))
