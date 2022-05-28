@@ -11,6 +11,7 @@ from glob import glob
 import os
 import random
 import cv2 as cv
+from PIL import Image
 import numpy as np
 
 
@@ -44,14 +45,13 @@ class NightModeDetector:
         if self.ShowSrcFlag:
             self.show_img(img, "Src Image", False)
 
-        bgr_planes = cv.split(img)
+        # bgr_planes = np.split(img)
 
-        b_hist = cv.calcHist(bgr_planes, [0], None, [
-            histSize], histRange, accumulate=accumulate)
-        g_hist = cv.calcHist(bgr_planes, [1], None, [
-            histSize], histRange, accumulate=accumulate)
-        r_hist = cv.calcHist(bgr_planes, [2], None, [
-            histSize], histRange, accumulate=accumulate)
+        hist, bins = np.histogram(img.ravel(), 256, [0, 256])
+
+        r_hist, _ = np.histogram(img[:, :, 0], 256, [0, 256])
+        g_hist, _ = np.histogram(img[:, :, 1], 256, [0, 256])
+        b_hist, _ = np.histogram(img[:, :, 2], 256, [0, 256])
 
         b_ratio_of_dark_hist_value = self.calculate_ratio_of_dark_hist(b_hist)
         g_ratio_of_dark_hist_value = self.calculate_ratio_of_dark_hist(g_hist)
@@ -77,17 +77,24 @@ class NightModeDetector:
         return float(sum(dark_hist)) / sum(hist)
 
     def wait_for_key(self, wait: int = 0):
-        return cv.waitKey(wait)
+        # return cv.waitKey(wait)
+        pass
 
     def show_img(self, img: np.ndarray, title: str, wait=True):
-        cv.imshow(title, img)
-        if wait == True:
-            self.wait_for_key()
+        # cv.imshow(title, img)
+        # if wait == True:
+        #     self.wait_for_key()
 
-        elif isinstance(wait, int) and wait != False:
-            self.wait_for_key(wait=wait)
+        # elif isinstance(wait, int) and wait != False:
+        #     self.wait_for_key(wait=wait)
+
+        Image.fromarray(img).show()
 
     def show_hist(self, b_hist: np.ndarray, g_hist: np.ndarray, r_hist: np.ndarray, wait=True):
+        print(b_hist.shape)
+        print(b_hist)
+        print(type(b_hist))
+        b_hist = vis2 = cv.CreateMat(h, w, cv.CV_32FC3)
         cv.normalize(b_hist, b_hist, alpha=0, beta=hist_h,
                      norm_type=cv.NORM_MINMAX)
         cv.normalize(g_hist, g_hist, alpha=0, beta=hist_h,
@@ -111,7 +118,8 @@ class NightModeDetector:
         if not os.path.exists(path):
             raise FileNotFoundError("Please Provide A Valid Image Path!")
 
-        return cv.imread(path)
+        print(np.asarray(Image.open(path)).astype(np.uint8))
+        return np.asarray(Image.open(path)).astype(np.uint8)
 
     def detect_is_night_from_path(self, path: str):
         return self.detect_is_night(self.load_img(path))
